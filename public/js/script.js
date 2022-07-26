@@ -25,10 +25,14 @@ function getLocation() {
     navigator.geolocation.getCurrentPosition(async position => {
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
-      document.getElementById("lat").innerHTML = lat;
+      document.getElementById("lat").innerHTML = lat; //to paste value inside html tag
       document.getElementById("lng").innerHTML = lng;
+
+
   
       const data = { lat, lng};
+
+
       const options = {
         method: 'POST',
         headers: {
@@ -36,16 +40,20 @@ function getLocation() {
         },
         body: JSON.stringify(data)
       };
-  
+
+
       const response = await fetch('/api', options);
       const clb = await response.json();
+
+
+      
       console.log(clb);
     });
     
   } else {
     console.log("Location information is unavailable.");
   }
-}
+};
 
 //floating animation
 var lFollowX = 0,
