@@ -57,21 +57,21 @@ app.post('/api', (request, response) => {
 
 app.post('/pst', function(req, res){
     const df = req.body;
+    var hspemail = "NOT FOUND";
+    var hspstreet = "NOT FOUND";
+    var hsppost = "NOT FOUND";
     for (var i =0; i<obj.length; i++) {
         if (obj[i].postal == df.pst) {
+            var hsppost = obj[i].postal;
             var hspemail = obj[i].email;
             var hspstreet = obj[i].street;
-        }
-        else {
-            hspemail = "NOT FOUND",
-            hspstreet = "NOT FOUND"
         }
     }
 
     
     res.json({
         status: "SUCCESS",
-        postal: df.pst,
+        postal: hsppost,
         email : hspemail,
         street : hspstreet
    });
