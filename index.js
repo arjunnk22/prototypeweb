@@ -62,6 +62,10 @@ app.post('/pst', function(req, res){
             var hspemail = obj[i].email;
             var hspstreet = obj[i].street;
         }
+        else {
+            hspemail = "NOT FOUND",
+            hspstreet = "NOT FOUND"
+        }
     }
 
     
