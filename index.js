@@ -1,5 +1,9 @@
 const express = require('express');
-const hspData = require('./data.json');
+
+var fs=require('fs');
+var hsdata=fs.readFileSync('data.json', 'utf8');
+var obj=JSON.parse(hsdata);
+
 const bodyParser=require("body-parser");
 
 const app = express();
@@ -8,8 +12,10 @@ require('dotenv').config();
 
 const Datastore = require('nedb');
 
+
 const database = new Datastore('data.db');
 database.loadDatabase();
+
 
 const port = process.env.PORT || 3000;
 
@@ -49,35 +55,20 @@ app.post('/api', (request, response) => {
 });
 
 
-// app.post('/pst', (request, response) => {
-//     console.log(request.body);
-//     const data = request.body;
-
-//     let reqData = hspData.find(el => el.postal === data.postal);
-//     const newData = reqData["email"];
-
-//     response.json({
-//         status: 'SUCCESS',
-//         lat : data.lat,
-//         lng : data.lng,
-//         post : data.postal,
-//         eml : newData
-//     });
-
-    
-// });
-
 app.post('/pst', function(req, res){
+    const df = req.body;
+    for (var i =0; i<obj.length; i++) {
+        if (obj[i].postal == df.pst) {
+            var hspemail = obj[i].email;
+            var hspstreet = obj[i].street;
+        }
+    }
 
-    const newData = req.body;
-    // res.writeHead(200,{
-    //     "Content-Type": "text/plain",
-    //     "Access-Control-Allow-Origin": "*" // Allow access from other domains
-    // });
-    
     
     res.json({
-         newdata: newData
-    });
-    //res.end();
+        status: "SUCCESS",
+        postal: df.pst,
+        email : hspemail,
+        street : hspstreet
+   });
 });

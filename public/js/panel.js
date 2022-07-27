@@ -40,22 +40,22 @@ async function getData() {
 
         const postal = val.postalCode.toString();
 
-        var xhttp = new XMLHttpRequest();
+        //var xhttp = new XMLHttpRequest();
 
 
 
         const date = new Date(r.timestamp).toLocaleDateString();
         const time = new Date(r.timestamp).toLocaleTimeString();
 
-        const newdt = { "date" : date, "time" : time, "latitude" : curLat, "longitude":  curLon, "postal" : postal, "street" : street};
-
-        const curpstl = JSON.stringify(newdt);
+        //const newdt = { "date" : date, "time" : time, "latitude" : curLat, "longitude":  curLon, "postal" : postal, "street" : street};
+        //const newdt = { date, time, curLat, curLon, postal, street };
+        //const curpstl = JSON.stringify(newdt);
         
         //alert(curpstl);
-        xhttp.addEventListener("load", reqListener);
-        xhttp.open("POST", "/pst", true);
-        xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhttp.send(curpstl);
+        //xhttp.addEventListener("load", reqListener);
+        //xhttp.open("POST", "/pst", true);
+        //xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //xhttp.send(curpstl);
         
 
         //sendDataNoti(curpstl);
@@ -67,6 +67,7 @@ async function getData() {
         <td>${curLon}</td>
         <td>${postal}</td>
         <td>${street}</td>
+        <td><button onclick='btn(${postal});'>TRANSFER</button></td>
         </tr>`;
 
 
@@ -76,64 +77,54 @@ async function getData() {
 }
 
 
-async function sendDataNoti(curpstl) {
+function demo (val) {
+
+}
+
+
+async function btn(pst){
+
+
+    const dv = { pst };
+
 
     const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(curpstl)
-      };
-      const nrps = await fetch('/pst', options);
-      const nwps = await nrps.json();
-      console.log(nwps);
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dv)
+    };
+
+
+    const res = await fetch('/pst', options);
+    const clb = await res.json();
+    console.log(clb);
+
+    sendDataNoti(clb);
 }
 
+function sendDataNoti(clb) {
 
 
+    const webHookUrl="https://maker.ifttt.com/trigger/demo_trigger/with/key/dD3wdcj9HxOpLIn3Lms0Ck";
 
+    const oReq = new XMLHttpRequest();
 
-// function sendDataNoti(dts) {
-
-//     const pstldat = { 683513 : 'abcdef', 682001: 'sadawf' };
-
-//     const dats = JSON.parse(pstldat);
-
-
-//     const pstl = dts.postal;
-
-//     const webHookUrl="https://maker.ifttt.com/trigger/sensor_triggered/json/with/key/dD3wdcj9HxOpLIn3Lms0Ck";
-
-//     const oReq = new XMLHttpRequest();
-
-//     for (let rpst of data) {
-        
-//         const myJSONStr = payload={
-//             "683513":[
-//               {
-//                 "latitude": 121,
-//                 "longitude": 111,
-//                 "email": "blaah",
-//                 "postal": pstl
-      
-//               }
-//           ]
-      
-//         };
-
-//     };
-//   //register method called after data has been sent method is executed
-//     oReq.addEventListener("load", reqListener);
-//     oReq.open("POST", webHookUrl,true);
-//     oReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-//     oReq.send(JSON.stringify(myJSONStr));
+    const myJSONStr = {
+        "value1" : clb.post,
+        "value2" : clb.street,
+        "value3" : clb.email
+    };
+  //register method called after data has been sent method is executed
+    oReq.addEventListener("load", reqListener);
+    oReq.open("POST", webHookUrl,true);
+    oReq.setRequestHeader('Content-Type', 'application/json');
+    oReq.send(JSON.stringify(myJSONStr));
     
-// }
-
+}
 
 function reqListener () {
-    const ndt = this.responseText;
-    const ydt = JSON.parse(ndt);
-    console.log(ydt);
+    console.log(this.responseText);
 }
+

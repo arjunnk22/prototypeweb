@@ -1,13 +1,13 @@
 [
-    { "postal" : 683513, "email" : "zxad@sdadk.com" },
+    { "postal" : 683513, "email" : "arjunnknair@gmail.com", "street" : "NORTH PARAVOOR"},
 
-    { "postal" : 683511, "email" : "sadwd@sdadk.com" },
+    { "postal" : 683511, "email" : "sadwd@sdadk.com", "street" : "awfawf" },
 
-    { "postal" : 683512, "email" : "sadwwd@sdadk.com" },
+    { "postal" : 683512, "email" : "sadwwd@sdadk.com", "street" : "awfawf" },
 
-    { "postal" : 683510, "email" : "sadwfdgwd@sdadk.com" },
-    { "postal" : 683514, "email" : "sadwsewwd@sdadk.com" },
-    { "postal" : 683515, "email" : "zadfwafwwd@sdadk.com" },
-    { "postal" : 683516, "email" : "sadffawwd@sdadk.com" }
+    { "postal" : 683510, "email" : "sadwfdgwd@sdadk.com", "street" : "fRwawf" },
+    { "postal" : 683514, "email" : "sadwsewwd@sdadk.com", "street" : "wfawf" },
+    { "postal" : 683515, "email" : "zadfwafwwd@sdadk.com", "street" : " waf" },
+    { "postal" : 683516, "email" : "sadffawwd@sdadk.com" , "street" : "Nsafa"}
 
 ]
