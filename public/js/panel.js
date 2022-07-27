@@ -101,7 +101,7 @@ async function btn(pst){
     const clb = await res.json();
     console.log(clb);
 
-    sendDataNoti(clb);
+    //sendDataNoti(clb);
 }
 
 function sendDataNoti(clb) {
