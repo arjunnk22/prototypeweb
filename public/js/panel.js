@@ -1,4 +1,8 @@
+
 getData();
+
+
+
 //css
 $(window).on("load resize ", function() {
     var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
@@ -6,84 +10,86 @@ $(window).on("load resize ", function() {
 }).resize();
 //css
   
-setInterval(getData, 1000); //to avoid manual refresh
+//setInterval(getData, 1000); //to avoid manual refresh
 async function getData() {
     const response = await fetch('/api');
     const data = await response.json();
     console.log(data);
 
     let tab = '';
+
     
     for (let r of data) {
 
         const curLat = r.lat;
         const curLon = r.lng;
 
-        //const api_url = new URL("http://open.mapquestapi.com/geocoding/v1/reverse?key=nuGVG7fPcJXBOcOsOPAABxAJ9ArmsAAG");
+        const api_url = new URL("http://open.mapquestapi.com/geocoding/v1/reverse?key=XzhalZlQuqTAHjAiD68ZiinzT9hIEfoV");
     
-        //api_url.searchParams.append('location', curLat);
+        api_url.searchParams.append('location', curLat);
         
-        //const newUrl = api_url.toString();
+        const newUrl = api_url.toString();
         
-        //const ulr = newUrl + ',' + curLon;
+        const ulr = newUrl + ',' + curLon;
 
-        //const rsp = await fetch(ulr);
-        //const pst = await rsp.json();
+        const rsp = await fetch(ulr);
+        const pst = await rsp.json();
 
-        //const val = pst.results[0].locations[0];
-        //const street = val.adminArea5.toString();
+        const val = pst.results[0].locations[0];
+        const street = val.adminArea5.toString();
 
-        //const postal = val.postalCode.toString();
+        const postal = val.postalCode.toString();
 
-
+        var xhttp = new XMLHttpRequest();
 
 
 
         const date = new Date(r.timestamp).toLocaleDateString();
         const time = new Date(r.timestamp).toLocaleTimeString();
+
+        const newdt = { "date" : date, "time" : time, "latitude" : curLat, "longitude":  curLon, "postal" : postal, "street" : street};
+
+        const curpstl = JSON.stringify(newdt);
         
+        //alert(curpstl);
+        xhttp.addEventListener("load", reqListener);
+        xhttp.open("POST", "/pst", true);
+        xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhttp.send(curpstl);
         
-        //const fnl = { date, time, curLat, curLon, postal, street };
-        //sendDataNoti(fnl);
+
+        //sendDataNoti(curpstl);
+
         tab += `<tr>
-        <td>${date} </td>
-        <td>${time} </td>
+        <td>${date}</td>
+        <td>${time}</td>
         <td>${curLat}</td>
         <td>${curLon}</td>
-        <td>POSTAL</td>
-        <td>STREET</td>
-        <td><button id="btn" href="#">TRANSFER</button></td>
+        <td>${postal}</td>
+        <td>${street}</td>
         </tr>`;
+
+
     }
     
     document.getElementById("outputs").innerHTML = tab;
-    // $("#btn").click(function(e){
-    //     console.log("HELLO");
-    // });
 }
 
 
+async function sendDataNoti(curpstl) {
 
-
-function sendDataNoti(dts) {
-
-    //document.getElementById("btn").addEventListener("click", myFunction);
-
-    let pstldat = {
-        683513 : 'abcdef',
-        682001: 'sadawf'
-    };
-    const pstl = dts.postal;
-
-    let result = pstl in pstldat;
-
-    if (result) {
-        console.log("YES!");
-    }
-    else {
-        console.log("NO!");
-    }
+    const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(curpstl)
+      };
+      const nrps = await fetch('/pst', options);
+      const nwps = await nrps.json();
+      console.log(nwps);
 }
+
 
 
 
@@ -126,6 +132,8 @@ function sendDataNoti(dts) {
 // }
 
 
-// function reqListener () {
-//     console.log(this.responseText);
-// }
+function reqListener () {
+    const ndt = this.responseText;
+    const ydt = JSON.parse(ndt);
+    console.log(ydt);
+}
